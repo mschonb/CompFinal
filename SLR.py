@@ -67,8 +67,7 @@ def main():
     # print(inputs)
 
     # create instance variables
-    parsing_stack = ['$', '0']
-    print(parsing_stack)
+    parsing_stack = ['0']
     steps = 0
     a = inputs[0]
 
@@ -80,24 +79,21 @@ def main():
         if(aux[0] == 's'):
             print(f"{parsing_stack} {aux}")
             parsing_stack.append(aux[1])
-            a = inputs[steps + 1]
+            steps += 1
+            a = inputs[steps]
 
         # case action is reduce
         elif(aux[0] == 'r'):
             x = prods[int(aux[1]) - 1]
-            popped_sum = 0
+            print(f"{parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
-                popped_sum += int(parsing_stack.pop())
-
-            # unhardcode this (0)
-            # this_goto = popped_sum + \
-            #    int(gotos[int(parsing_stack[int(len(parsing_stack)) - 1])][0])
+                parsing_stack.pop()
 
             parsing_stack.append(
-                gotos[int(parsing_stack[int(len(parsing_stack)) - 1])][0])
-            print(f"{parsing_stack} {x[0]}")
+                gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][0])
         # Finished parsing
         elif(aux == 'accept'):
+            print(f"{parsing_stack} {aux}")
             break
 
         # no transition rule.
