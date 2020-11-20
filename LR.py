@@ -1,4 +1,5 @@
 import csv
+import sys
 
 # reads goto or actions from a csv file
 # returns array where row 0 is either terminals or variables
@@ -54,12 +55,12 @@ def read_input(fname):
 # print(read_productions("producciones1.txt"))
 # print(read_input("entrada1.txt"))
 
-def main():
+def main(arg_list):
     # read files
-    actions = read_instructions("action1.csv")
-    gotos = read_instructions("goto1.csv")
-    prods = read_productions("producciones1.txt")
-    inputs = read_input("entrada1.txt")
+    actions = read_instructions(arg_list[1])
+    gotos = read_instructions(arg_list[2])
+    prods = read_productions(arg_list[3])
+    inputs = read_input(arg_list[4])
 
     # print(actions)
     # print(gotos)
@@ -103,4 +104,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+
+    main(sys.argv)
