@@ -58,10 +58,13 @@ def read_input(fname):
 
 def main(arg_list):
     # read files
-    actions = read_instructions(arg_list[1])
-    gotos = read_instructions(arg_list[2])
-    prods = read_productions(arg_list[3])
-    inputs = read_input(arg_list[4])
+    try:
+        actions = read_instructions(arg_list[1])
+        gotos = read_instructions(arg_list[2])
+        prods = read_productions(arg_list[3])
+        inputs = read_input(arg_list[4])
+    except IndexError as ierr:
+        usage(ierr)
 
     # print(actions)
     # print(gotos)
@@ -103,7 +106,15 @@ def main(arg_list):
             print("No hay regla de transición. No se acepta la cadena.")
             break
 
+def usage(err=None):
+    if err:
+        print(err)
+
+    print("Usage:\n\tpython LR.py <actionfile.csv> <gotofile.csv> <productions.txt> <input.txt>")
+    exit(1)
 
 if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        usage()
 
     main(sys.argv)
