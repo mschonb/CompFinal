@@ -30,7 +30,8 @@ def read_productions(fname):
     with open(fname) as f:
         lines = f.readlines()
         for line in lines:
-            temp = [line.split(',')[0], line.split(',')[1].replace('\n', '')]
+            splitted_line = line.split(',')
+            temp = [splitted_line[0], splitted_line[1].replace('\n', '')]
             productions.append(temp)
 
     return productions
@@ -93,9 +94,9 @@ def main(arg_list):
             print(f"{parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
                 parsing_stack.pop()
-
+            curr_non_t = gotos[0].index(x[0][0])
             parsing_stack.append(
-                gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][0])
+                gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
         # Finished parsing
         elif(aux == 'accept'):
             print(f"{parsing_stack} {aux}")

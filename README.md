@@ -23,7 +23,7 @@ El propósito de un analizador SLR(1) es ser un poco más capaz que un parser LR
     ['r2', 'r2', 'r2', 'r2']]
     ```
 
-  - Goto $\rightarrow$
+  - **Goto** $\rightarrow$
 
     ```sh
     [['S'], 
@@ -59,6 +59,7 @@ Marcelo Schonbrunn
 Yann Le Lorier
 $$
 \begin{align}
+&S' \rightarrow S\\
 &S \rightarrow +SS\\
 &S \rightarrow *SS\\
 &S \rightarrow \text{DIGIT DIGITS}\\
@@ -71,7 +72,6 @@ $$
 
 - Calcular FIRST y FOLLOW para cada no terminal y cree el conjunto canónico para el analizador SLR  (el  diagramota), pueden usar lo compartido por Isaac y Simón y extenderlo (20 puntos)
 
-
 **First**
 $$
 \text{FIRST}(S) = \{+, *, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9\}
@@ -82,38 +82,44 @@ $$
 $$
 Finalmente:
 $$
-\text{FIRST}(\text{DIGITS}) = \{\#\}
+\text{FIRST}(\text{DIGITS}) = \{\#, 0, 1, 2, 3,4 ,5,6,7,8,9\}
 $$
 **Follow**
+
+Calculemos Follow de S
 $$
 \text{FOLLOW}(S) = \{$\}
 $$
 
+Ahora, Follow de Digit
 $$
-\text{FOLLOW}(\text{DIGIT}) = \{\text{FIRST}(\text{DIGITS}) - \epsilon\}\; 
+\text{FOLLOW}(\text{DIGIT}) = \text{FIRST}(\text{DIGITS}) = \{\#,0,1,2,3,4,5,6,7,8,9\}
 $$
 
+Finalmente, Follow de Digits
 $$
 \text{FOLLOW}(\text{DIGITS}) = \{ \# \}
 $$
 
 **Conjunto Canónico**
 
-![SLRcanonical](./img/SLRcanonical.png)
+Imagen aqui
 
 - Crear la tabla del analizador SLR para esa gramática,(Action y GOTO)(10 puntos)
 
 **Tabla Action Y GoTo**
 
-| 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | S    | DIGIT | DIGITS |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ----- | ------ |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
-|      |      |      |      |      |      |      |      |      |      |      |       |        |
+| State  | +    | *    | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | #    | $      | S    | DIGIT | DIGITS |
+| ------ | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ------ | ---- | ----- | ------ |
+| **0**  | S3   | S4   |      |      |      |      |      |      |      |      |      |      |      |        | 1    | 2     |        |
+| **1**  |      |      |      |      |      |      |      |      |      |      |      |      |      | Accept |      |       |        |
+| **2**  |      |      | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   |      |        |      |       |        |
+| **3**  | S3   | s2   |      |      |      |      |      |      |      |      |      |      |      |        | 5    | 2     |        |
+| **4**  | S3   | S4   |      |      |      |      |      |      |      |      |      |      |      |        | 6    | 2     |        |
+| **5**  | S3   | S4   |      |      |      |      |      |      |      |      |      |      |      |        | 7    | 2     |        |
+| **6**  | s3   | s4   |      |      |      |      |      |      |      |      |      |      |      |        |      | 2     |        |
+| **7**  | R?   |      |      |      |      |      |      |      |      |      |      |      |      |        | 8    |       |        |
+| **8**  | r?   |      |      |      |      |      |      |      |      |      |      |      |      |        |      |       |        |
+| **9**  |      |      | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   | s9   |      |        |      |       | 10     |
+| **10** | r?   |      |      |      |      |      |      |      |      |      |      |      | S10  |        |      |       |        |
 
