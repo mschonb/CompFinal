@@ -1,15 +1,13 @@
 rsf = ['+', 'a', '*', 'a', 'S', '$'] 
 reduction = 'a'
-
-
 def searchInArray(rsf, reduction):
     if len(reduction) == 1:
-        return [rsf.index(reduction), rsf.index(reduction)]
+        return (rsf.index(reduction), rsf.index(reduction) + 1)
     index = 0
     counter = 0
     for v in rsf:
         if index == len(reduction) - 1:
-            return [counter - index,  counter - index + len(reduction) - 1]
+            return (counter - index,  counter - index + len(reduction))
         if v == reduction[index]:
             index += 1
         else:

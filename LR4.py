@@ -53,12 +53,12 @@ def read_input(fname):
 
 def searchInArray(rsf, reduction):
     if len(reduction) == 1:
-        return [rsf.index(reduction), rsf.index(reduction)]
+        return (rsf.index(reduction), rsf.index(reduction) + 1)
     index = 0
     counter = 0
     for v in rsf:
         if index == len(reduction) - 1:
-            return [counter - index,  counter - index + len(reduction) - 1]
+            return (counter - index,  counter - index + len(reduction))
         if v == reduction[index]:
             index += 1
         else:
@@ -107,7 +107,9 @@ def main(arg_list):
                 parsing_stack.pop()
             curr_non_t = gotos[0].index(x[0][0])
 
-            right_sent[right_sent.index((reduction[2])[0])] = reduction[0] 
+            #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
+            to_replace = searchInArray(right_sent, reduction[2])
+            right_sent[to_replace[0]:to_replace[1]] = reduction[0]
             parsing_stack.append(
                 gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
         # Finished parsing
