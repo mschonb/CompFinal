@@ -1,13 +1,13 @@
 import sys
+from py_mini_racer import py_mini_racer
 
 # reads goto or actions from a csv file
 # returns array where row 0 is either terminals or variables
 # and the rest of the rows are the actions/gotos
-
-
 def read_instructions(fname):
     instructions = []
     temp = []
+    
     with open(fname) as f:
         lines = f.readlines()
         for line in lines:
@@ -21,24 +21,22 @@ def read_instructions(fname):
     return instructions
 
 # reads production csv and returns a list
-# with all production pops
-
-
+# with all production pops and semantic operations
 def read_productions(fname):
     productions = []
+    temp = []
+    temp_str = ''
+    no_split = False
     with open(fname) as f:
         lines = f.readlines()
         for line in lines:
-            splitted_line = line.split(',')
-            temp = [splitted_line[0], splitted_line[1].replace('\n', '')]
+            splitted_line = line.split(',', maxsplit=2)
+            temp = [splitted_line[0], splitted_line[1], splitted_line[2].replace('\n', '')]
             productions.append(temp)
-
     return productions
 
 # reads input .txt and retuns a list with
 # the input string.
-
-
 def read_input(fname):
     input = []
     with open(fname) as f:
@@ -49,10 +47,14 @@ def read_input(fname):
         input[index] = symbol.replace('\n', '')
     return input
 
+def exe_js(js_stmnt):
+    ctx = py_mini_racer.MiniRacer()
+    return ctx.eval(js_stmnt)
+
 
 # print(read_instructions("action1.csv"))
 # print(read_instructions("goto1.csv"))
-# print(read_productions("producciones1.txt"))
+# print(read_productions("producciones2.txt"))
 # print(read_input("entrada1.txt"))
 
 
@@ -66,10 +68,10 @@ def main(arg_list):
     except IndexError as ierr:
         usage(ierr)
 
-    # print(actions)
-    # print(gotos)
-    # print(prods)
-    # print(inputs)
+    print(actions)
+    print(gotos)
+    print(prods)
+    print(inputs)
 
     # create instance variables
     parsing_stack = ['0']

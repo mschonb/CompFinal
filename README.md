@@ -4,6 +4,11 @@ El propósito de un analizador SLR(1) es ser un poco más capaz que un parser LR
 
 ## Clases y métodos utilizados
 
+Módulos utilizados:
+
+- ```sys```
+- ```py_mini_racer```: instalación con ```pip install py-mini-racer```
+
 ### Lectura de archivos:
 
 - antes de entrar al algoritmo, tenemos una función ```read_instructions(filename)``` que recibe el nombre de un archivo. Esta función se encarga de analizar los documentos de entrada ```action.csv``` y ```goto.csv``` , y de arrojar los resultados en una lista bidimensional convencional de python. En el ejemplo adjunto a este documento obtenemos los siguientes resultados. Decidimos mantener el header del csv para facilitar la columna correspondiente de la acción por tomar:

@@ -1,6 +1,4 @@
-import csv
 import sys
-import re
 
 # reads goto or actions from a csv file
 # returns array where row 0 is either terminals or variables
@@ -8,7 +6,6 @@ import re
 def read_instructions(fname):
     instructions = []
     temp = []
-    
     with open(fname) as f:
         lines = f.readlines()
         for line in lines:
@@ -22,18 +19,16 @@ def read_instructions(fname):
     return instructions
 
 # reads production csv and returns a list
-# with all production pops and semantic operations
+# with all production pops
 def read_productions(fname):
     productions = []
-    temp = []
-    temp_str = ''
-    no_split = False
     with open(fname) as f:
         lines = f.readlines()
         for line in lines:
-            splitted_line = line.split(',', maxsplit=2)
-            temp = [splitted_line[0], splitted_line[1], splitted_line[2].replace('\n', '')]
+            splitted_line = line.split(',')
+            temp = [splitted_line[0], splitted_line[1].replace('\n', '')]
             productions.append(temp)
+
     return productions
 
 # reads input .txt and retuns a list with
@@ -51,7 +46,7 @@ def read_input(fname):
 
 # print(read_instructions("action1.csv"))
 # print(read_instructions("goto1.csv"))
-# print(read_productions("producciones2.txt"))
+# print(read_productions("producciones1.txt"))
 # print(read_input("entrada1.txt"))
 
 
@@ -65,45 +60,50 @@ def main(arg_list):
     except IndexError as ierr:
         usage(ierr)
 
-    print(actions)
-    print(gotos)
-    print(prods)
-    print(inputs)
+    # print(actions)
+    # print(gotos)
+    # print(prods)
+    # print(inputs)
 
     # create instance variables
     parsing_stack = ['0']
     steps = 0
     a = inputs[0]
+    right_sent = inputs
 
     # Main algorithm
-#    while(True):
-#        s = parsing_stack[len(parsing_stack) - 1]
-#        aux = actions[int(s) + 1][actions[0].index(a)]
-#        # case: actions is shift
-#        if(aux[0] == 's'):
-#            print(f"{parsing_stack} {aux}")
-#            parsing_stack.append(aux[1])
-#            steps += 1
-#            a = inputs[steps]
-#
-#        # case action is reduce
-#        elif(aux[0] == 'r'):
-#            x = prods[int(aux[1]) - 1]
-#            print(f"{parsing_stack} {x[0]}")
-#            for _ in range(int(x[1])):
-#                parsing_stack.pop()
-#            curr_non_t = gotos[0].index(x[0][0])
-#            parsing_stack.append(
-#                gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
-#        # Finished parsing
-#        elif(aux == 'accept'):
-#            print(f"{parsing_stack} {aux}")
-#            break
-#
-#        # no transition rule.
-#        else:
-#            print("No hay regla de transición. No se acepta la cadena.")
-#            break
+    while(True):
+        s = parsing_stack[len(parsing_stack) - 1]
+        aux = actions[int(s) + 1][actions[0].index(a)]
+        # case: actions is shift
+        if(aux[0] == 's'):
+            print(f"{right_sent} {parsing_stack} {aux}")
+            parsing_stack.append(aux[1])
+            steps += 1
+            a = inputs[steps]
+
+        # case action is reduce
+        elif(aux[0] == 'r'):
+            x = prods[int(aux[1]) - 1]
+            reduction = x[0].split(' ') 
+            print(f"{right_sent} {parsing_stack} {x[0]}")
+            for _ in range(int(x[1])):
+                parsing_stack.pop()
+            curr_non_t = gotos[0].index(x[0][0])
+
+            right_sent[right_sent.index((reduction[2])[0])] = reduction[0] 
+            
+            parsing_stack.append(
+                gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
+        # Finished parsing
+        elif(aux == 'accept'):
+            print(f"{inputs} {parsing_stack} {aux}")
+            break
+
+        # no transition rule.
+        else:
+            print("No hay regla de transición. No se acepta la cadena.")
+            break
 
 def usage(err=None):
     if err:
