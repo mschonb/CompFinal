@@ -52,14 +52,32 @@ def read_input(fname):
 
 
 def searchInArray(rsf, reduction):
+    #case looking for single char
     if len(reduction) == 1:
         return (rsf.index(reduction), rsf.index(reduction) + 1)
+
+    #case looking for set of chars
     index = 0
     counter = 0
     for v in rsf:
         if index == len(reduction) - 1:
             return (counter - index,  counter - index + len(reduction))
         if v == reduction[index]:
+            index += 1
+        else:
+            index = 0
+        counter += 1
+
+    #case looking for set of strings
+    aux = reduction.split(' ')
+    if len(aux) == 1:
+        return (rsf.index(aux[0]), rsf.index(aux[0]) + 1) #S -> DIGIT; aux = [DIGIT]; rsf.index(aux[0])
+    index = 0
+    counter = 0
+    for v in rsf:
+        if index == len(aux) - 1:
+            return (counter - index,  counter - index + len(aux))
+        if v == aux[index]:
             index += 1
         else:
             index = 0
@@ -101,14 +119,14 @@ def main(arg_list):
         # case action is reduce
         elif(aux[0] == 'r'):
             x = prods[int(aux[1]) - 1]
-            reduction = x[0].split(' ') 
+            reduction = x[0].replace(' ', '').split('->') #S -> DIGIT DIGITS
             print(f"{right_sent} {parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
                 parsing_stack.pop()
             curr_non_t = gotos[0].index(x[0][0])
 
             #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
-            to_replace = searchInArray(right_sent, reduction[2])
+            to_replace = searchInArray(right_sent, reduction[1])
             right_sent[to_replace[0]:to_replace[1]] = reduction[0]
             parsing_stack.append(
                 gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
