@@ -122,11 +122,13 @@ def main(arg_list):
         # case action is reduce
         elif(aux != '' and aux[0] == 'r'):
             x = prods[int(aux[1]) - 1]
+            print("x", x)
             reduction = x[0].replace(' ', '').split('->') #S -> DIGIT DIGITS
             print(f"{right_sent} {parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
                 parsing_stack.pop()
-            curr_non_t = gotos[0].index(x[0][0])
+            # gotos[0].index(x[0])
+            curr_non_t = gotos[0].index(reduction[0])
 
             #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
             to_replace = searchInArray(right_sent, reduction[1])
