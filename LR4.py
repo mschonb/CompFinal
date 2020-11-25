@@ -66,7 +66,7 @@ def searchInArray(rsf, reduction):
         if index == len(reduction) - 1:
             return (counter - index,  counter - index + len(reduction))
         if v == reduction[index]:
-            index += 1
+            index += 1  
         else:
             index = 0
         counter += 1
@@ -76,15 +76,19 @@ def searchInArray(rsf, reduction):
     if len(aux) == 1:
         return (rsf.index(aux[0]), rsf.index(aux[0]) + 1) #S -> DIGIT; aux = [DIGIT]; rsf.index(aux[0])
     index = 0
-    counter = 0
-    for v in rsf:
-        if index == len(aux) - 1:
+    counter = 0 
+
+    while counter < len(rsf):
+        #print(rsf[i], ' == ', aux[index])
+        if index == len(aux):
             return (counter - index,  counter - index + len(aux))
-        if v == aux[index]:
+        if rsf[counter] == aux[index]:
             index += 1
         else:
+            counter -= index
             index = 0
         counter += 1
+
     return None
 
 def main(arg_list):
@@ -106,24 +110,25 @@ def main(arg_list):
     parsing_stack = ['0']
     steps = 0
     a = inputs[0]
-    right_sent = inputs
+    right_sent = inputs.copy()
 
     # Main algorithm
     while(True):
         s = parsing_stack[len(parsing_stack) - 1]
         aux = actions[int(s) + 1][actions[0].index(a)]
+        #print("aux: ", aux)
+
         # case: actions is shift
         if(aux != '' and aux[0] == 's'):
             print(f"{right_sent} {parsing_stack} {aux}")
-            parsing_stack.append(aux[1])
+            parsing_stack.append(aux[1:])
             steps += 1
             a = inputs[steps]
 
         # case action is reduce
         elif(aux != '' and aux[0] == 'r'):
-            x = prods[int(aux[1]) - 1]
-            print("x", x)
-            reduction = x[0].replace(' ', '').split('->') #S -> DIGIT DIGITS
+            x = prods[int(aux[1:]) - 1]
+            reduction = x[0].replace(' ', '', 2).split('->') #S -> DIGIT DIGITS
             print(f"{right_sent} {parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
                 parsing_stack.pop()
@@ -132,17 +137,18 @@ def main(arg_list):
 
             #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
             to_replace = searchInArray(right_sent, reduction[1])
-            right_sent[to_replace[0]:to_replace[1]] = reduction[0]
+            right_sent[to_replace[0]:to_replace[1]] = [reduction[0]]
+
             parsing_stack.append(
                 gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
         # Finished parsing
         elif(aux == 'accept'):
-            print(f"{inputs} {parsing_stack} {aux}")
+            print(f"{right_sent} {parsing_stack} {aux}")
             break
 
         # no transition rule.
         else:
-            print("No hay regla de transición. No se acepta la cadena.")
+            print("Lo sentimos la regla de transicion que busca no existe, favor de verificarla, gracias")
             break
 
 def usage(err=None):

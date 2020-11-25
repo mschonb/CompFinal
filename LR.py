@@ -83,7 +83,7 @@ def main(arg_list):
         # case: actions is shift
         if(aux[0] == 's'):
             print(f"{parsing_stack} {aux}")
-            parsing_stack.append(aux[1])
+            parsing_stack.append(aux[1:])
             steps += 1
             a = inputs[steps]
 
