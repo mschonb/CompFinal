@@ -113,14 +113,14 @@ def main(arg_list):
         s = parsing_stack[len(parsing_stack) - 1]
         aux = actions[int(s) + 1][actions[0].index(a)]
         # case: actions is shift
-        if(aux[0] == 's'):
+        if(aux != '' and aux[0] == 's'):
             print(f"{right_sent} {parsing_stack} {aux}")
             parsing_stack.append(aux[1])
             steps += 1
             a = inputs[steps]
 
         # case action is reduce
-        elif(aux[0] == 'r'):
+        elif(aux != '' and aux[0] == 'r'):
             x = prods[int(aux[1]) - 1]
             reduction = x[0].replace(' ', '').split('->') #S -> DIGIT DIGITS
             print(f"{right_sent} {parsing_stack} {x[0]}")
