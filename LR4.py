@@ -44,10 +44,13 @@ def read_input(fname):
     return input
 
 
-# print(read_instructions("action1.csv"))
-# print(read_instructions("goto1.csv"))
-# print(read_productions("producciones1.txt"))
-# print(read_input("entrada1.txt"))
+print(read_instructions("action2.csv"))
+print('----------------------------------------------------')
+print(read_instructions("goto2.csv"))
+print('----------------------------------------------------')
+print(read_productions("producciones2-semantic-agnostic.txt"))
+print('----------------------------------------------------')
+print(read_input("entrada2.txt"))
 
 
 

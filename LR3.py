@@ -1,9 +1,11 @@
 import sys
-from py_mini_racer import py_mini_racer
-
+#from py_mini_racer import py_mini_racer
+import execjs
 # reads goto or actions from a csv file
 # returns array where row 0 is either terminals or variables
 # and the rest of the rows are the actions/gotos
+
+
 def read_instructions(fname):
     instructions = []
     temp = []
@@ -46,11 +48,6 @@ def read_input(fname):
     for index, symbol in enumerate(input):
         input[index] = symbol.replace('\n', '')
     return input
-
-def exe_js(js_stmnt):
-    ctx = py_mini_racer.MiniRacer()
-    return ctx.eval(js_stmnt)
-
 
 # print(read_instructions("action1.csv"))
 # print(read_instructions("goto1.csv"))

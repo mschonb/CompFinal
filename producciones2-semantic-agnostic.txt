@@ -1,0 +1,15 @@
+S -> + S S,3
+S -> * S S,3
+S -> DIGIT DIGITS,2
+DIGIT -> 0,1
+DIGIT -> 1,1
+DIGIT -> 2,1
+DIGIT -> 3,1
+DIGIT -> 4,1
+DIGIT -> 5,1
+DIGIT -> 6,1
+DIGIT -> 7,1
+DIGIT -> 8,1
+DIGIT -> 9,1
+DIGITS -> DIGIT DIGITS,2
+DIGITS -> #,1
