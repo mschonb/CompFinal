@@ -89,17 +89,19 @@ f2 = function (ss) {
         for(var i = 0; i < ss.length; i++) {
         ss[i]["put"] = function(key,value) {this[key] = value};
         ss[i]["contains"] = function(key) {return this[key] != null};
-        ss[i]["get"] = function(key) {return this[key]}
+        ss[i]["get"] = function(key) {return this[key]};
+        ss[i]["containsKey"] = function(key) {return this[key] != null};
+        ss[i]["toString"] = function() {return this};
+        ss[i]["length"] = function() {return this.length};
      }
 }
 """
-accion_semantica = ''
-funcion_acc = "f = function (ss) { f1 = " + accion_semantica + la_f2 + "f2(ss); f1(ss); return ss;}"
+semantic_act = ''
+funcion_acc = "f = function (ss) { f1 = " + semantic_act + la_f2 + "f2(ss); f1(ss); return ss;}"
 
 def main(arg_list):
     # read files
     try:
-        ctx = execjs.compile(funcion_acc)
         actions = read_instructions(arg_list[1])
         gotos = read_instructions(arg_list[2])
         prods = read_productions(arg_list[3])
@@ -117,7 +119,9 @@ def main(arg_list):
     steps = 0
     a = inputs[0]
     right_sent = inputs.copy()
-    ss = []
+    number = []
+    this_terminal = {}
+
     # Main algorithm
     while(True):
         s = parsing_stack[len(parsing_stack) - 1]
@@ -126,7 +130,7 @@ def main(arg_list):
 
         # case: actions is shift
         if(aux != '' and aux[0] == 's'):
-            print(f"{right_sent} {parsing_stack} {aux}")
+            # print(f"{right_sent} {parsing_stack} {aux}")
             parsing_stack.append(aux[1:])
             steps += 1
             a = inputs[steps]
@@ -135,11 +139,32 @@ def main(arg_list):
         elif(aux != '' and aux[0] == 'r'):
             x = prods[int(aux[1:]) - 1]
             reduction = x[0].replace(' ', '', 2).split('->') #S -> DIGIT DIGITS
-            print(f"{right_sent} {parsing_stack} {x[0]}")
+            # print(f"{right_sent} {parsing_stack} {x[0]}")
             for _ in range(int(x[1])):
                 parsing_stack.pop()
             
-            
+            #magic
+            print(x)
+            semantic_act = x[2]
+            print(semantic_act)
+            funcion_acc = "f = function (ss) { f1 = " + semantic_act + la_f2 + "f2(ss); f1(ss); return ss;}"
+            ctx = execjs.compile(funcion_acc)
+
+            #case found a terminal
+            if int(x[1]) == 1 and reduction[1]!='#':
+                this_terminal = [{}]
+                res_list = ctx.call("f", this_terminal)
+                #only one element
+                number.append(res_list[0])
+            #Any other productor
+            elif int(x[1])!=1:
+                number.insert(0, dict())
+                number = ctx.call("f", number)
+                del number[1:3]
+            print(number)
+
+            #eo magic
+
             # gotos[0].index(x[0])
             curr_non_t = gotos[0].index(reduction[0])
 
@@ -151,8 +176,7 @@ def main(arg_list):
                 gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
         # Finished parsing
         elif(aux == 'accept'):
-            print(f"{right_sent} {parsing_stack} {aux}")
-            calc()
+            # print(f"{right_sent} {parsing_stack} {aux}")
             break
 
         # no transition rule.
