@@ -1,6 +1,5 @@
 import sys
 import execjs
-from calc import calc
 
 # reads goto or actions from a csv file
 # returns array where row 0 is either terminals or variables
@@ -91,8 +90,6 @@ f2 = function (ss) {
         ss[i]["contains"] = function(key) {return this[key] != null};
         ss[i]["get"] = function(key) {return this[key]};
         ss[i]["containsKey"] = function(key) {return this[key] != null};
-        ss[i]["toString"] = function() {return this};
-        ss[i]["length"] = function() {return this.length};
      }
 }
 """
@@ -144,23 +141,29 @@ def main(arg_list):
                 parsing_stack.pop()
             
             #magic
-            print(x)
+            # print(x)
             semantic_act = x[2]
-            print(semantic_act)
             funcion_acc = "f = function (ss) { f1 = " + semantic_act + la_f2 + "f2(ss); f1(ss); return ss;}"
             ctx = execjs.compile(funcion_acc)
 
             #case found a terminal
             if int(x[1]) == 1 and reduction[1]!='#':
                 this_terminal = [{}]
-                res_list = ctx.call("f", this_terminal)
+                this_terminal = ctx.call("f", this_terminal)
                 #only one element
-                number.append(res_list[0])
+                number.append(this_terminal[0])
             #Any other productor
             elif int(x[1])!=1:
+                if x[0] == 'S -> DIGIT DIGITS' or x[0]=='S -> * S S':
+                    number.insert(0, {"n":0})
                 number.insert(0, dict())
                 number = ctx.call("f", number)
-                del number[1:3]
+                print("number b4 del", number)
+                if x[0]=='S -> + S S' or x[0]=='S -> * S S':
+                    number.pop()
+                    number.pop()
+                else:
+                    del number[1:3]
             print(number)
 
             #eo magic
