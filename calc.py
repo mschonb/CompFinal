@@ -1,5 +1,5 @@
 #profe no tenemos idea :(
 #Esto esta muy extraño
-
+import random
 def calc():
-    print(984)
+    print(random.randint(0,10000))
