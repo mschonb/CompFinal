@@ -1,3 +1,8 @@
+"""
+Marcelo Schonbrunn
+Yann Le Lorier
+"""
+
 import sys
 
 # reads goto or actions from a csv file
@@ -49,13 +54,6 @@ def read_input(fname):
         input[index] = symbol.replace('\n', '')
     return input
 
-
-# print(read_instructions("action1.csv"))
-# print(read_instructions("goto1.csv"))
-# print(read_productions("producciones1.txt"))
-# print(read_input("entrada1.txt"))
-
-
 def main(arg_list):
     # read files
     try:
@@ -65,11 +63,6 @@ def main(arg_list):
         inputs = read_input(arg_list[4])
     except IndexError as ierr:
         usage(ierr)
-
-    # print(actions)
-    # print(gotos)
-    # print(prods)
-    # print(inputs)
 
     # create instance variables
     parsing_stack = ['0']

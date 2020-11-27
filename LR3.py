@@ -1,3 +1,8 @@
+"""
+Marcelo Schonbrunn
+Yann Le Lorier
+"""
+
 import sys
 import execjs
 
@@ -182,7 +187,7 @@ def main(arg_list):
                 del number[1:3]
             print("number:", number)
             #eo magic
-            
+
             curr_non_t = gotos[0].index(reduction[0])
 
             to_replace = searchInArray(right_sent, reduction[1])

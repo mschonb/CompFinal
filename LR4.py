@@ -1,3 +1,8 @@
+"""
+Marcelo Schonbrunn
+Yann Le Lorier
+"""
+
 import sys
 
 # reads goto or actions from a csv file
@@ -43,17 +48,6 @@ def read_input(fname):
         input[index] = symbol.replace('\n', '')
     return input
 
-
-print(read_instructions("action2.csv"))
-print('----------------------------------------------------')
-print(read_instructions("goto2.csv"))
-print('----------------------------------------------------')
-print(read_productions("producciones2-semantic-agnostic.txt"))
-print('----------------------------------------------------')
-print(read_input("entrada2.txt"))
-
-
-
 def searchInArray(rsf, reduction):
     #case looking for single char
     if len(reduction) == 1:
@@ -79,7 +73,6 @@ def searchInArray(rsf, reduction):
     counter = 0 
 
     while counter < len(rsf):
-        #print(rsf[i], ' == ', aux[index])
         if index == len(aux):
             return (counter - index,  counter - index + len(aux))
         if rsf[counter] == aux[index]:
@@ -101,11 +94,6 @@ def main(arg_list):
     except IndexError as ierr:
         usage(ierr)
 
-    # print(actions)
-    # print(gotos)
-    # print(prods)
-    # print(inputs)
-
     # create instance variables
     parsing_stack = ['0']
     steps = 0
@@ -116,7 +104,6 @@ def main(arg_list):
     while(True):
         s = parsing_stack[len(parsing_stack) - 1]
         aux = actions[int(s) + 1][actions[0].index(a)]
-        #print("aux: ", aux)
 
         # case: actions is shift
         if(aux != '' and aux[0] == 's'):
@@ -135,7 +122,6 @@ def main(arg_list):
             # gotos[0].index(x[0])
             curr_non_t = gotos[0].index(reduction[0])
 
-            #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
             to_replace = searchInArray(right_sent, reduction[1])
             right_sent[to_replace[0]:to_replace[1]] = [reduction[0]]
 
