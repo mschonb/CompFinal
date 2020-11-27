@@ -118,6 +118,7 @@ def main(arg_list):
     right_sent = inputs.copy()
     number = []
     this_terminal = {}
+    numbers = []
 
     # Main algorithm
     while(True):
@@ -148,30 +149,42 @@ def main(arg_list):
 
             #case found a terminal
             if int(x[1]) == 1 and reduction[1]!='#':
+                print(x[0])
                 this_terminal = [{}]
                 this_terminal = ctx.call("f", this_terminal)
                 #only one element
                 number.append(this_terminal[0])
+            elif reduction[1]=='#':
+                print(x[0])
             #Any other productor
             elif int(x[1])!=1:
-                if x[0] == 'S -> DIGIT DIGITS' or x[0]=='S -> * S S':
+                print(x[0])
+                if x[0] == 'S -> DIGIT DIGITS':# or x[0]=='S -> * S S':
                     number.insert(0, {"n":0})
-                number.insert(0, dict())
-                number = ctx.call("f", number)
-                print("number b4 del", number)
-                if x[0]=='S -> + S S' or x[0]=='S -> * S S':
-                    number.pop()
-                    number.pop()
+                    number.insert(0, dict())
+                    number = ctx.call("f", number)
+                    numbers.append(number.pop(0))
+                    number.pop(0)
+                    number.pop(0)
+                    print("numbers", numbers)
+                elif x[0]=='S -> + S S' or x[0]=='S -> * S S':
+                    numbers.reverse()
+                    numbers.insert(0, dict())
+                    numbers.insert(0,dict())
+                    numbers = ctx.call("f", numbers)
+                    print(numbers)
+                    del numbers[1:4]
+                    print(numbers)
+                    numbers.reverse()
                 else:
-                    del number[1:3]
-            print(number)
-
+                    number.insert(0, dict())
+                    number = ctx.call("f", number)
+                del number[1:3]
+            print("number:", number)
             #eo magic
-
-            # gotos[0].index(x[0])
+            
             curr_non_t = gotos[0].index(reduction[0])
 
-            #right_sent[right_sent.index((reduction[2])[0])] = reduction[0]
             to_replace = searchInArray(right_sent, reduction[1])
             right_sent[to_replace[0]:to_replace[1]] = [reduction[0]]
 
@@ -179,6 +192,8 @@ def main(arg_list):
                 gotos[int(parsing_stack[len(parsing_stack)-1]) + 1][curr_non_t])
         # Finished parsing
         elif(aux == 'accept'):
+            print("Input:", inputs)
+            print("Result:", numbers[0])
             # print(f"{right_sent} {parsing_stack} {aux}")
             break
 
