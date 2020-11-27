@@ -113,7 +113,7 @@ $$
 
 **Conjunto Canónico**
 
-[DFA](.img/DFA.png)
+![DFA](img/DFA.png)
 
 - Crear la tabla del analizador SLR para esa gramática,(Action y GOTO)(10 puntos)
 
