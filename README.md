@@ -1,3 +1,8 @@
+
+Marcelo Schonbrunn
+
+Yann Le Lorier
+
 # Pregunta 1
 
 El propósito de un analizador SLR(1) es ser un poco más capaz que un parser LR(0). Se trata del mismo principio, pero lo que cambia es que se basa en una construcción de una tabla canónica de todos los componentes LR(0). El principal beneficio de usar un analizador SLR(1) por encima de un LR(1) o un Lookahead LR (1) es que la construcción de la tabla de transiciones es pequeña, por lo que es fácil de entender.
@@ -7,7 +12,7 @@ El propósito de un analizador SLR(1) es ser un poco más capaz que un parser LR
 Módulos utilizados:
 
 - ```sys```
-- ```py_mini_racer```: instalación con ```pip install py-mini-racer```
+- ```pyexecjs```: instalación con ```pip install pyexecjs```
 
 ### Lectura de archivos:
 
@@ -59,9 +64,6 @@ python3 LR.py action1.csv goto1.csv producciones1.txt entrada1.txt
 
 # Pregunta 2
 
-Marcelo Schonbrunn
-
-Yann Le Lorier
 $$
 \begin{align}
 &S' \rightarrow S\\
@@ -73,7 +75,6 @@ $$
 &\text{DIGITS} \rightarrow \#
 \end{align}
 $$
-
 
 - Calcular FIRST y FOLLOW para cada no terminal y cree el conjunto canónico para el analizador SLR  (el  diagramota), pueden usar lo compartido por Isaac y Simón y extenderlo (20 puntos)
 
@@ -108,7 +109,7 @@ $$
 
 **Conjunto Canónico**
 
-Imagen aqui
+[DFA](./DFA.png)
 
 - Crear la tabla del analizador SLR para esa gramática,(Action y GOTO)(10 puntos)
 
@@ -140,5 +141,14 @@ Imagen aqui
 | **21** |      |      | r1   | r1   | r1   | r1   | r1   | r1   | r1   | r1   | r1   | r1   | r1   | r1     |      |       |        |
 | **22** |      |      | r2   | r2   | r2   | r2   | r2   | r2   | r2   | r2   | r2   | r2   | r2   | r2     |      |       |        |
 
+# Pregunta 3
 
+Se ha modificado el código visto en la pregunta 1 para ejecutar acciones semánticas las cuales se encuentran en el archivo de entrada ```producciones2.txt```. La funcion ```readInstructions()``` coloca éstas acciones dentro en el tercer espacio de cada arreglo.
 
+ Como las acciones semánticas están escritas en JavaScript, utilizmos el módulo ```pyexecjs``` para ejecutar las acciones semánticas en un contexto de JS dentro del archivo de python.
+
+ El nuevo arreglo + 
+# Pregunta 4
+
+Se ha modificado el código visto en la pregunta 1 para incluir la forma sentencial derecha (Right Sentential Form), o abreviada '*RSF*'. 
+Ésta se encuentra dentro del arreglo  ```right_sent``` que se origina al copiar el arreglo ```inputs```
