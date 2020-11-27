@@ -1,9 +1,11 @@
 
-Marcelo Schonbrunn
+# Examen Final - Compiladores
 
-Yann Le Lorier
+Marcelo Schonbrunn - A01207573
 
-# Pregunta 1
+Yann Le Lorier - A01025977
+
+# Pregunta 1 - Documentación
 
 El propósito de un analizador SLR(1) es ser un poco más capaz que un parser LR(0). Se trata del mismo principio, pero lo que cambia es que se basa en una construcción de una tabla canónica de todos los componentes LR(0). El principal beneficio de usar un analizador SLR(1) por encima de un LR(1) o un Lookahead LR (1) es que la construcción de la tabla de transiciones es pequeña, por lo que es fácil de entender.
 
@@ -62,7 +64,9 @@ finalmente, con todas las tablas o matrices listas, podemos correr el algoritmo 
 python3 LR.py action1.csv goto1.csv producciones1.txt entrada1.txt
 ```
 
-# Pregunta 2
+> **N.B.**: para la pregunta 1, correr ```LR.py```, para la 3, correr ```LR3.py``` y finalmente, para la 4, correr ```LR4.py```.
+
+# Pregunta 2 - Extensión de la gramática
 
 $$
 \begin{align}
@@ -143,12 +147,19 @@ $$
 
 # Pregunta 3
 
-Se ha modificado el código visto en la pregunta 1 para ejecutar acciones semánticas las cuales se encuentran en el archivo de entrada ```producciones2.txt```. La funcion ```readInstructions()``` coloca éstas acciones dentro en el tercer espacio de cada arreglo.
+Se ha modificado el código visto en la pregunta 1 para ejecutar acciones semánticas las cuales se encuentran en el archivo de entrada ```producciones2.txt```. La función ```readInstructions()``` coloca estas acciones dentro del tercer espacio de cada arreglo.
 
- Como las acciones semánticas están escritas en JavaScript, utilizmos el módulo ```pyexecjs``` para ejecutar las acciones semánticas en un contexto de JS dentro del archivo de python.
+ Como las acciones semánticas están escritas en JavaScript, utilizamos el módulo ```pyexecjs``` para ejecutar las acciones semánticas en un contexto de JS dentro del archivo de python.
 
- El nuevo arreglo + 
+ > **N.B.**: La librería de ```execjs``` ya no está siendo mantenida, por lo que espera cierta sintaxis (vieja) de JavaScript.
+
+Por lo tanto, hicimos los siguientes cambios al archivo de producciones2.txt:
+
+- Agregamos '{' y '}' en todos los bloques de código
+- Agregamos ';' al final de todas las sentencias
+- cambiamos las dos únicas instancias de ```.length()``` en el archivo por el atributo ```.length```
+
 # Pregunta 4
 
-Se ha modificado el código visto en la pregunta 1 para incluir la forma sentencial derecha (Right Sentential Form), o abreviada '*RSF*'. 
-Ésta se encuentra dentro del arreglo  ```right_sent``` que se origina al copiar el arreglo ```inputs```
+Se ha modificado el código visto en la pregunta 1 para incluir la forma sentencial derecha (Right Sentential Form), o abreviada '*RSF*'.  
+Esta se encuentra dentro del arreglo  ```right_sent``` que se origina al copiar el arreglo ```inputs```, para evitar cambiar directamente la lista de inputs, y de hecho, es la que se imprime en cada iteración del algoritmo.
